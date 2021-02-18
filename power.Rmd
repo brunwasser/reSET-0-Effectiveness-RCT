@@ -1,0 +1,128 @@
+---
+title: "Power Analysis"
+output:
+  html_document:
+    code_folding: hide
+    toc: true
+    toc_depth: 1
+    number_sections: true
+---
+
+# Notes
+As of Feb 18, 2021, I have only run models assuming between-cluster variance of about 10%. I am guessing that this is a high estimate. Also, I have assumed that we will have all 300 participants in both arms with the outcome variable not missing. Future analyses should consider other estimates of between-cluster variance and should evaluate the potential impact of attrition. 
+
+# Prepare workspace
+Load the required packages.
+```{r}
+require( clusterPower )
+require( longpower )
+```
+
+
+# GEE Model
+
+## GEE Model Assuming OR=0.50
+Estimate power for rejecting the null hypothesis that difference in the odds of non-abstinence (0=abstinent; 1=used drugs) across the reSET-O and treatment as usual care (TAU) conditions is 0 at weeks 9-12 of the study. The model assumes the following:
+
+* Random allocation of half the total cluster (k=6) to reSET-O and half (k=6) to TAU
+* Equal cluster sizes of 50 patients (300 patients in each group)
+* Probability of non-abstinence in TAU assumed to be 40% based on [Maricich et al., 2020](https://www.tandfonline.com/doi/full/10.1080/03007995.2020.1846022)
+* Probability of non-abstinence in reSET-O assumed to be 25% based on [Maricich et al., 2020](https://www.tandfonline.com/doi/full/10.1080/03007995.2020.1846022)
+* This comes to an assumed odds ratio (OR) = 0.5, a 50% reduction in odds.
+
+```{r warning=F, message=F}
+# geesim1 <- cps.binary( nsim = 1000,
+#                        nsubjects = 50, # 50 participants per cluster assuming equal sizes
+#                        nclusters = 6, # 6 clusters per treatment arm
+#                        p1=.40, # 40% non-abstinence rate in TAU in Maricich et al. (2020)
+#                        p2=.25, # 25% non-abstinence rate in reSET-0 group in Maricich et al. (2020)
+#                        sigma_b_sq=0.024, # variance = p(1-p)=0.24; assume 10% variance is between)
+#                        sigma_b_sq2=0.019, # variance = p(1-p)=0.1875; assume 10% variance is between)
+#                        alpha=.05,
+#                        method='gee',
+#                        quiet=F,
+#                        seed=0218211,
+#                        lowPowerOverride = TRUE)
+load( 'geesim1.RData' )
+summary( geesim1 )                       
+```
+
+This simulation suggests that our power would be between 0.94-0.97 -- i.e., well powered.  
+
+## GEE Model Assuming OR=0.80
+Now we will calculate power using a simulation assuming a more modest effect where reSET-O results in a 20% reduction in the odds.
+
+* Assume a 40% non-abstinence rate in TAU
+* Assume a 35% non-abstinence rate in reSET-O
+* Keep all of the rest of the assumptions the same as in the previous simulation
+
+```{r warning=F, message=F}
+# geesim2 <- cps.binary( nsim = 1000,
+#                        nsubjects = 50, # 50 participants per cluster assuming equal sizes
+#                        nclusters = 6, # 6 clusters per treatment arm
+#                        p1=.40, # 40% non-abstinence rate in TAU in Maricich et al. (2020)
+#                        p2=.35, # 25% non-abstinence rate in reSET-0 group in Maricich et al. (2020)
+#                        sigma_b_sq=0.024, # variance = p(1-p)=0.24; assume 10% variance is between)
+#                        sigma_b_sq2=0.023, # variance = p(1-p)=0.2275; assume 10% variance is between)
+#                        alpha=.05,
+#                        method='gee',
+#                        quiet=F,
+#                        seed=0218211,
+#                        lowPowerOverride = TRUE )
+load( 'geesim2.RData' )
+summary( geesim2 )                       
+```
+
+This simulation suggests that our power would be between 0.23-0.29 -- i.e., poorly powered.  
+
+
+## GEE Model Assuming OR=0.65
+Now we will calculate power using a simulation assuming an in-between effect where reSET-O results in a ~35% reduction in the odds.
+
+* Assume a 40% non-abstinence rate in TAU
+* Assume a 30% non-abstinence rate in reSET-O
+* Keep all of the rest of the assumptions the same as in the previous simulation
+
+```{r warning=F, message=F}
+# geesim3 <- cps.binary( nsim = 1000,
+#                        nsubjects = 50, # 50 participants per cluster assuming equal sizes
+#                        nclusters = 6, # 6 clusters per treatment arm
+#                        p1=.40, # 40% non-abstinence rate in TAU in Maricich et al. (2020)
+#                        p2=.30, # 25% non-abstinence rate in reSET-0 group in Maricich et al. (2020)
+#                        sigma_b_sq=0.024, # variance = p(1-p)=0.24; assume 10% variance is between)
+#                        sigma_b_sq2=0.021, # variance = p(1-p)=0.21; assume 10% variance is between)
+#                        alpha=.05,
+#                        method='gee',
+#                        quiet=F,
+#                        seed=0218211,
+#                        lowPowerOverride = TRUE )
+load( 'geesim3.RData' )
+summary( geesim3 )            
+```
+
+This simulation suggests that our power would be between 0.66-0.71 -- i.e., moderately powered. 
+
+## GEE Model Assuming OR=0.60
+
+```{r warning=F, message=F}
+# geesim4 <- cps.binary( nsim = 1000,
+#                        nsubjects = 50, # 50 participants per cluster assuming equal sizes
+#                        nclusters = 6, # 6 clusters per treatment arm
+#                        p1=.40, # 40% non-abstinence rate in TAU in Maricich et al. (2020)
+#                        p2=.29, # 25% non-abstinence rate in reSET-0 group in Maricich et al. (2020)
+#                        sigma_b_sq=0.024, # variance = p(1-p)=0.24; assume 10% variance is between)
+#                        sigma_b_sq2=0.021, # variance = p(1-p)=0.21; assume 10% variance is between)
+#                        alpha=.05,
+#                        method='gee',
+#                        quiet=F,
+#                        seed=0218211,
+#                        lowPowerOverride = TRUE )
+load( 'geesim4.RData' )
+summary( geesim4 )
+```
+
+This simulation suggests that our power would be between 0.74-0.79 -- i.e., approaching the goal of 0.80. 
+
+
+
+# Cox Propotional Hazards Model

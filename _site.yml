@@ -1,0 +1,10 @@
+name: "reSET-O Effectiveness RCT"
+navbar:
+  title: "reSET-O Effectiveness RCT"
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "About"
+      href: about.html
+    - text: "Power Analysis"
+      href: power.html
