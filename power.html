@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Power Analysis</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">reSET-O Effectiveness RCT</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="power.html">Power Analysis</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Power Analysis</h1>
+
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#notes"><span class="toc-section-number">1</span> Notes</a></li>
+<li><a href="#prepare-workspace"><span class="toc-section-number">2</span> Prepare workspace</a></li>
+<li><a href="#gee-model"><span class="toc-section-number">3</span> GEE Model</a></li>
+<li><a href="#cox-propotional-hazards-model"><span class="toc-section-number">4</span> Cox Propotional Hazards Model</a></li>
+</ul>
+</div>
+
+<div id="notes" class="section level1">
+<h1><span class="header-section-number">1</span> Notes</h1>
+<p>As of Feb 18, 2021, I have only run models assuming between-cluster variance of about 10%. I am guessing that this is a high estimate. Also, I have assumed that we will have all 300 participants in both arms with the outcome variable not missing. Future analyses should consider other estimates of between-cluster variance and should evaluate the potential impact of attrition.</p>
+</div>
+<div id="prepare-workspace" class="section level1">
+<h1><span class="header-section-number">2</span> Prepare workspace</h1>
+<p>Load the required packages.</p>
+<pre class="r"><code>require( clusterPower )</code></pre>
+<pre><code>## Loading required package: clusterPower</code></pre>
+<pre><code>## Warning: package &#39;clusterPower&#39; was built under R version 4.0.3</code></pre>
+<pre class="r"><code>require( longpower )</code></pre>
+<pre><code>## Loading required package: longpower</code></pre>
+<pre><code>## Warning: package &#39;longpower&#39; was built under R version 4.0.3</code></pre>
+<pre><code>## Loading required package: lme4</code></pre>
+<pre><code>## Loading required package: Matrix</code></pre>
+<pre><code>## Loading required package: nlme</code></pre>
+<pre><code>## 
+## Attaching package: &#39;nlme&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:lme4&#39;:
+## 
+##     lmList</code></pre>
+</div>
+<div id="gee-model" class="section level1">
+<h1><span class="header-section-number">3</span> GEE Model</h1>
+<div id="gee-model-assuming-or0.50" class="section level2">
+<h2><span class="header-section-number">3.1</span> GEE Model Assuming OR=0.50</h2>
+<p>Estimate power for rejecting the null hypothesis that difference in the odds of non-abstinence (0=abstinent; 1=used drugs) across the reSET-O and treatment as usual care (TAU) conditions is 0 at weeks 9-12 of the study. The model assumes the following:</p>
+<ul>
+<li>Random allocation of half the total cluster (k=6) to reSET-O and half (k=6) to TAU</li>
+<li>Equal cluster sizes of 50 patients (300 patients in each group)</li>
+<li>Probability of non-abstinence in TAU assumed to be 40% based on <a href="https://www.tandfonline.com/doi/full/10.1080/03007995.2020.1846022">Maricich et al., 2020</a></li>
+<li>Probability of non-abstinence in reSET-O assumed to be 25% based on <a href="https://www.tandfonline.com/doi/full/10.1080/03007995.2020.1846022">Maricich et al., 2020</a></li>
+<li>This comes to an assumed odds ratio (OR) = 0.5, a 50% reduction in odds.</li>
+</ul>
+<pre class="r"><code># geesim1 &lt;- cps.binary( nsim = 1000,
+#                        nsubjects = 50, # 50 participants per cluster assuming equal sizes
+#                        nclusters = 6, # 6 clusters per treatment arm
+#                        p1=.40, # 40% non-abstinence rate in TAU in Maricich et al. (2020)
+#                        p2=.25, # 25% non-abstinence rate in reSET-0 group in Maricich et al. (2020)
+#                        sigma_b_sq=0.024, # variance = p(1-p)=0.24; assume 10% variance is between)
+#                        sigma_b_sq2=0.019, # variance = p(1-p)=0.1875; assume 10% variance is between)
+#                        alpha=.05,
+#                        method=&#39;gee&#39;,
+#                        quiet=F,
+#                        seed=0218211,
+#                        lowPowerOverride = TRUE)
+load( &#39;geesim1.RData&#39; )
+summary( geesim1 )                       </code></pre>
+<pre><code>## 
+## Monte Carlo Power Estimation based on 1000 Simulations: Simple Design, Binary Outcome. Note: 0 additional models were fitted to account for non-convergent simulations.
+## 
+## Power Estimate (alpha = 0.05):
+##  Power Lower.95.CI Upper.95.CI Alpha  Beta Converged Requested
+##  0.956   0.9413796   0.9678505  0.05 0.044      1000      1000
+## 
+## Method: Generalized Estimating Equation 
+## 
+## Variance Parameters:
+##      sigma_b_sq
+## Arm1      0.024
+## Arm2      0.019
+## 
+## Clusters:
+##      n.clust
+## Arm1       6
+## Arm2       6
+## 
+## Observations:
+## $Arm1
+## [1] 50 50 50 50 50 50
+## 
+## $Arm2
+## [1] 50 50 50 50 50 50
+## 
+## 
+## Convergence:
+## TRUE 
+## 1000</code></pre>
+<p>This simulation suggests that our power would be between 0.94-0.97 – i.e., well powered.</p>
+</div>
+<div id="gee-model-assuming-or0.80" class="section level2">
+<h2><span class="header-section-number">3.2</span> GEE Model Assuming OR=0.80</h2>
+<p>Now we will calculate power using a simulation assuming a more modest effect where reSET-O results in a 20% reduction in the odds.</p>
+<ul>
+<li>Assume a 40% non-abstinence rate in TAU</li>
+<li>Assume a 35% non-abstinence rate in reSET-O</li>
+<li>Keep all of the rest of the assumptions the same as in the previous simulation</li>
+</ul>
+<pre class="r"><code># geesim2 &lt;- cps.binary( nsim = 1000,
+#                        nsubjects = 50, # 50 participants per cluster assuming equal sizes
+#                        nclusters = 6, # 6 clusters per treatment arm
+#                        p1=.40, # 40% non-abstinence rate in TAU in Maricich et al. (2020)
+#                        p2=.35, # 25% non-abstinence rate in reSET-0 group in Maricich et al. (2020)
+#                        sigma_b_sq=0.024, # variance = p(1-p)=0.24; assume 10% variance is between)
+#                        sigma_b_sq2=0.023, # variance = p(1-p)=0.2275; assume 10% variance is between)
+#                        alpha=.05,
+#                        method=&#39;gee&#39;,
+#                        quiet=F,
+#                        seed=0218211,
+#                        lowPowerOverride = TRUE )
+load( &#39;geesim2.RData&#39; )
+summary( geesim2 )                       </code></pre>
+<pre><code>## 
+## Monte Carlo Power Estimation based on 1000 Simulations: Simple Design, Binary Outcome. Note: 0 additional models were fitted to account for non-convergent simulations.
+## 
+## Power Estimate (alpha = 0.05):
+##  Power Lower.95.CI Upper.95.CI Alpha  Beta Converged Requested
+##  0.263   0.2359435   0.2914594  0.05 0.737      1000      1000
+## 
+## Method: Generalized Estimating Equation 
+## 
+## Variance Parameters:
+##      sigma_b_sq
+## Arm1      0.024
+## Arm2      0.023
+## 
+## Clusters:
+##      n.clust
+## Arm1       6
+## Arm2       6
+## 
+## Observations:
+## $Arm1
+## [1] 50 50 50 50 50 50
+## 
+## $Arm2
+## [1] 50 50 50 50 50 50
+## 
+## 
+## Convergence:
+## TRUE 
+## 1000</code></pre>
+<p>This simulation suggests that our power would be between 0.23-0.29 – i.e., poorly powered.</p>
+</div>
+<div id="gee-model-assuming-or0.65" class="section level2">
+<h2><span class="header-section-number">3.3</span> GEE Model Assuming OR=0.65</h2>
+<p>Now we will calculate power using a simulation assuming an in-between effect where reSET-O results in a ~35% reduction in the odds.</p>
+<ul>
+<li>Assume a 40% non-abstinence rate in TAU</li>
+<li>Assume a 30% non-abstinence rate in reSET-O</li>
+<li>Keep all of the rest of the assumptions the same as in the previous simulation</li>
+</ul>
+<pre class="r"><code># geesim3 &lt;- cps.binary( nsim = 1000,
+#                        nsubjects = 50, # 50 participants per cluster assuming equal sizes
+#                        nclusters = 6, # 6 clusters per treatment arm
+#                        p1=.40, # 40% non-abstinence rate in TAU in Maricich et al. (2020)
+#                        p2=.30, # 25% non-abstinence rate in reSET-0 group in Maricich et al. (2020)
+#                        sigma_b_sq=0.024, # variance = p(1-p)=0.24; assume 10% variance is between)
+#                        sigma_b_sq2=0.021, # variance = p(1-p)=0.21; assume 10% variance is between)
+#                        alpha=.05,
+#                        method=&#39;gee&#39;,
+#                        quiet=F,
+#                        seed=0218211,
+#                        lowPowerOverride = TRUE )
+load( &#39;geesim3.RData&#39; )
+summary( geesim3 )            </code></pre>
+<pre><code>## 
+## Monte Carlo Power Estimation based on 1000 Simulations: Simple Design, Binary Outcome. Note: 0 additional models were fitted to account for non-convergent simulations.
+## 
+## Power Estimate (alpha = 0.05):
+##  Power Lower.95.CI Upper.95.CI Alpha  Beta Converged Requested
+##  0.688   0.6582616   0.7166268  0.05 0.312      1000      1000
+## 
+## Method: Generalized Estimating Equation 
+## 
+## Variance Parameters:
+##      sigma_b_sq
+## Arm1      0.024
+## Arm2      0.021
+## 
+## Clusters:
+##      n.clust
+## Arm1       6
+## Arm2       6
+## 
+## Observations:
+## $Arm1
+## [1] 50 50 50 50 50 50
+## 
+## $Arm2
+## [1] 50 50 50 50 50 50
+## 
+## 
+## Convergence:
+## TRUE 
+## 1000</code></pre>
+<p>This simulation suggests that our power would be between 0.66-0.71 – i.e., moderately powered.</p>
+</div>
+<div id="gee-model-assuming-or0.60" class="section level2">
+<h2><span class="header-section-number">3.4</span> GEE Model Assuming OR=0.60</h2>
+<pre class="r"><code># geesim4 &lt;- cps.binary( nsim = 1000,
+#                        nsubjects = 50, # 50 participants per cluster assuming equal sizes
+#                        nclusters = 6, # 6 clusters per treatment arm
+#                        p1=.40, # 40% non-abstinence rate in TAU in Maricich et al. (2020)
+#                        p2=.29, # 25% non-abstinence rate in reSET-0 group in Maricich et al. (2020)
+#                        sigma_b_sq=0.024, # variance = p(1-p)=0.24; assume 10% variance is between)
+#                        sigma_b_sq2=0.021, # variance = p(1-p)=0.21; assume 10% variance is between)
+#                        alpha=.05,
+#                        method=&#39;gee&#39;,
+#                        quiet=F,
+#                        seed=0218211,
+#                        lowPowerOverride = TRUE )
+load( &#39;geesim4.RData&#39; )
+summary( geesim4 )</code></pre>
+<pre><code>## 
+## Monte Carlo Power Estimation based on 1000 Simulations: Simple Design, Binary Outcome. Note: 0 additional models were fitted to account for non-convergent simulations.
+## 
+## Power Estimate (alpha = 0.05):
+##  Power Lower.95.CI Upper.95.CI Alpha  Beta Converged Requested
+##  0.763   0.7353915   0.7890505  0.05 0.237      1000      1000
+## 
+## Method: Generalized Estimating Equation 
+## 
+## Variance Parameters:
+##      sigma_b_sq
+## Arm1      0.024
+## Arm2      0.021
+## 
+## Clusters:
+##      n.clust
+## Arm1       6
+## Arm2       6
+## 
+## Observations:
+## $Arm1
+## [1] 50 50 50 50 50 50
+## 
+## $Arm2
+## [1] 50 50 50 50 50 50
+## 
+## 
+## Convergence:
+## TRUE 
+## 1000</code></pre>
+<p>This simulation suggests that our power would be between 0.74-0.79 – i.e., approaching the goal of 0.80.</p>
+</div>
+</div>
+<div id="cox-propotional-hazards-model" class="section level1">
+<h1><span class="header-section-number">4</span> Cox Propotional Hazards Model</h1>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
