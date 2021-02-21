@@ -1,5 +1,5 @@
 ---
-title: "reSET-O Effectiness RCT"
+title: "reSET-O Effectiveness RCT"
 date: "2/17/2021"
 output: html_document
 ---

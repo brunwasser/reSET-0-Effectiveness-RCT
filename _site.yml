@@ -8,3 +8,6 @@ navbar:
       href: about.html
     - text: "Power Analysis"
       href: power.html
+output:
+  html_document:
+    theme: cosmo

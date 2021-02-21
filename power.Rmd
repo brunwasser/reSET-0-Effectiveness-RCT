@@ -3,9 +3,15 @@ title: "Power Analysis"
 output:
   html_document:
     code_folding: hide
-    toc: true
+    toc: yes
     toc_depth: 1
-    number_sections: true
+    number_sections: yes
+  word_document:
+    toc: yes
+    toc_depth: '1'
+  pdf_document:
+    toc: yes
+    toc_depth: '1'
 ---
 
 # Notes
@@ -13,7 +19,7 @@ As of Feb 18, 2021, I have only run models assuming between-cluster variance of 
 
 # Prepare workspace
 Load the required packages.
-```{r}
+```{r warning=F, message=FALSE}
 require( clusterPower )
 require( longpower )
 ```
