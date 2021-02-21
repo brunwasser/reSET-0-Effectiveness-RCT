@@ -1,0 +1,432 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Power Analysis},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+
+\title{Power Analysis}
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{1}
+\tableofcontents
+}
+\hypertarget{notes}{%
+\section{Notes}\label{notes}}
+
+As of Feb 18, 2021, I have only run models assuming between-cluster
+variance of about 10\%. I am guessing that this is a high estimate.
+Also, I have assumed that we will have all 300 participants in both arms
+with the outcome variable not missing. Future analyses should consider
+other estimates of between-cluster variance and should evaluate the
+potential impact of attrition.
+
+\hypertarget{prepare-workspace}{%
+\section{Prepare workspace}\label{prepare-workspace}}
+
+Load the required packages.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{require}\NormalTok{( clusterPower )}
+\KeywordTok{require}\NormalTok{( longpower )}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{gee-model}{%
+\section{GEE Model}\label{gee-model}}
+
+\hypertarget{gee-model-assuming-or0.50}{%
+\subsection{GEE Model Assuming
+OR=0.50}\label{gee-model-assuming-or0.50}}
+
+Estimate power for rejecting the null hypothesis that difference in the
+odds of non-abstinence (0=abstinent; 1=used drugs) across the reSET-O
+and treatment as usual care (TAU) conditions is 0 at weeks 9-12 of the
+study. The model assumes the following:
+
+\begin{itemize}
+\tightlist
+\item
+  Random allocation of half the total cluster (k=6) to reSET-O and half
+  (k=6) to TAU
+\item
+  Equal cluster sizes of 50 patients (300 patients in each group)
+\item
+  Probability of non-abstinence in TAU assumed to be 40\% based on
+  \href{https://www.tandfonline.com/doi/full/10.1080/03007995.2020.1846022}{Maricich
+  et al., 2020}
+\item
+  Probability of non-abstinence in reSET-O assumed to be 25\% based on
+  \href{https://www.tandfonline.com/doi/full/10.1080/03007995.2020.1846022}{Maricich
+  et al., 2020}
+\item
+  This comes to an assumed odds ratio (OR) = 0.5, a 50\% reduction in
+  odds.
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# geesim1 <- cps.binary( nsim = 1000,}
+\CommentTok{#                        nsubjects = 50, # 50 participants per cluster assuming equal sizes}
+\CommentTok{#                        nclusters = 6, # 6 clusters per treatment arm}
+\CommentTok{#                        p1=.40, # 40% non-abstinence rate in TAU in Maricich et al. (2020)}
+\CommentTok{#                        p2=.25, # 25% non-abstinence rate in reSET-0 group in Maricich et al. (2020)}
+\CommentTok{#                        sigma_b_sq=0.024, # variance = p(1-p)=0.24; assume 10% variance is between)}
+\CommentTok{#                        sigma_b_sq2=0.019, # variance = p(1-p)=0.1875; assume 10% variance is between)}
+\CommentTok{#                        alpha=.05,}
+\CommentTok{#                        method='gee',}
+\CommentTok{#                        quiet=F,}
+\CommentTok{#                        seed=0218211,}
+\CommentTok{#                        lowPowerOverride = TRUE)}
+\KeywordTok{load}\NormalTok{( }\StringTok{'geesim1.RData'}\NormalTok{ )}
+\KeywordTok{summary}\NormalTok{( geesim1 )                       }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Monte Carlo Power Estimation based on 1000 Simulations: Simple Design, Binary Outcome. Note: 0 additional models were fitted to account for non-convergent simulations.
+## 
+## Power Estimate (alpha = 0.05):
+##  Power Lower.95.CI Upper.95.CI Alpha  Beta Converged Requested
+##  0.956   0.9413796   0.9678505  0.05 0.044      1000      1000
+## 
+## Method: Generalized Estimating Equation 
+## 
+## Variance Parameters:
+##      sigma_b_sq
+## Arm1      0.024
+## Arm2      0.019
+## 
+## Clusters:
+##      n.clust
+## Arm1       6
+## Arm2       6
+## 
+## Observations:
+## $Arm1
+## [1] 50 50 50 50 50 50
+## 
+## $Arm2
+## [1] 50 50 50 50 50 50
+## 
+## 
+## Convergence:
+## TRUE 
+## 1000
+\end{verbatim}
+
+This simulation suggests that our power would be between 0.94-0.97 --
+i.e., well powered.
+
+\hypertarget{gee-model-assuming-or0.80}{%
+\subsection{GEE Model Assuming
+OR=0.80}\label{gee-model-assuming-or0.80}}
+
+Now we will calculate power using a simulation assuming a more modest
+effect where reSET-O results in a 20\% reduction in the odds.
+
+\begin{itemize}
+\tightlist
+\item
+  Assume a 40\% non-abstinence rate in TAU
+\item
+  Assume a 35\% non-abstinence rate in reSET-O
+\item
+  Keep all of the rest of the assumptions the same as in the previous
+  simulation
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# geesim2 <- cps.binary( nsim = 1000,}
+\CommentTok{#                        nsubjects = 50, # 50 participants per cluster assuming equal sizes}
+\CommentTok{#                        nclusters = 6, # 6 clusters per treatment arm}
+\CommentTok{#                        p1=.40, # 40% non-abstinence rate in TAU in Maricich et al. (2020)}
+\CommentTok{#                        p2=.35, # 25% non-abstinence rate in reSET-0 group in Maricich et al. (2020)}
+\CommentTok{#                        sigma_b_sq=0.024, # variance = p(1-p)=0.24; assume 10% variance is between)}
+\CommentTok{#                        sigma_b_sq2=0.023, # variance = p(1-p)=0.2275; assume 10% variance is between)}
+\CommentTok{#                        alpha=.05,}
+\CommentTok{#                        method='gee',}
+\CommentTok{#                        quiet=F,}
+\CommentTok{#                        seed=0218211,}
+\CommentTok{#                        lowPowerOverride = TRUE )}
+\KeywordTok{load}\NormalTok{( }\StringTok{'geesim2.RData'}\NormalTok{ )}
+\KeywordTok{summary}\NormalTok{( geesim2 )                       }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Monte Carlo Power Estimation based on 1000 Simulations: Simple Design, Binary Outcome. Note: 0 additional models were fitted to account for non-convergent simulations.
+## 
+## Power Estimate (alpha = 0.05):
+##  Power Lower.95.CI Upper.95.CI Alpha  Beta Converged Requested
+##  0.263   0.2359435   0.2914594  0.05 0.737      1000      1000
+## 
+## Method: Generalized Estimating Equation 
+## 
+## Variance Parameters:
+##      sigma_b_sq
+## Arm1      0.024
+## Arm2      0.023
+## 
+## Clusters:
+##      n.clust
+## Arm1       6
+## Arm2       6
+## 
+## Observations:
+## $Arm1
+## [1] 50 50 50 50 50 50
+## 
+## $Arm2
+## [1] 50 50 50 50 50 50
+## 
+## 
+## Convergence:
+## TRUE 
+## 1000
+\end{verbatim}
+
+This simulation suggests that our power would be between 0.23-0.29 --
+i.e., poorly powered.
+
+\hypertarget{gee-model-assuming-or0.65}{%
+\subsection{GEE Model Assuming
+OR=0.65}\label{gee-model-assuming-or0.65}}
+
+Now we will calculate power using a simulation assuming an in-between
+effect where reSET-O results in a \textasciitilde35\% reduction in the
+odds.
+
+\begin{itemize}
+\tightlist
+\item
+  Assume a 40\% non-abstinence rate in TAU
+\item
+  Assume a 30\% non-abstinence rate in reSET-O
+\item
+  Keep all of the rest of the assumptions the same as in the previous
+  simulation
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# geesim3 <- cps.binary( nsim = 1000,}
+\CommentTok{#                        nsubjects = 50, # 50 participants per cluster assuming equal sizes}
+\CommentTok{#                        nclusters = 6, # 6 clusters per treatment arm}
+\CommentTok{#                        p1=.40, # 40% non-abstinence rate in TAU in Maricich et al. (2020)}
+\CommentTok{#                        p2=.30, # 25% non-abstinence rate in reSET-0 group in Maricich et al. (2020)}
+\CommentTok{#                        sigma_b_sq=0.024, # variance = p(1-p)=0.24; assume 10% variance is between)}
+\CommentTok{#                        sigma_b_sq2=0.021, # variance = p(1-p)=0.21; assume 10% variance is between)}
+\CommentTok{#                        alpha=.05,}
+\CommentTok{#                        method='gee',}
+\CommentTok{#                        quiet=F,}
+\CommentTok{#                        seed=0218211,}
+\CommentTok{#                        lowPowerOverride = TRUE )}
+\KeywordTok{load}\NormalTok{( }\StringTok{'geesim3.RData'}\NormalTok{ )}
+\KeywordTok{summary}\NormalTok{( geesim3 )            }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Monte Carlo Power Estimation based on 1000 Simulations: Simple Design, Binary Outcome. Note: 0 additional models were fitted to account for non-convergent simulations.
+## 
+## Power Estimate (alpha = 0.05):
+##  Power Lower.95.CI Upper.95.CI Alpha  Beta Converged Requested
+##  0.688   0.6582616   0.7166268  0.05 0.312      1000      1000
+## 
+## Method: Generalized Estimating Equation 
+## 
+## Variance Parameters:
+##      sigma_b_sq
+## Arm1      0.024
+## Arm2      0.021
+## 
+## Clusters:
+##      n.clust
+## Arm1       6
+## Arm2       6
+## 
+## Observations:
+## $Arm1
+## [1] 50 50 50 50 50 50
+## 
+## $Arm2
+## [1] 50 50 50 50 50 50
+## 
+## 
+## Convergence:
+## TRUE 
+## 1000
+\end{verbatim}
+
+This simulation suggests that our power would be between 0.66-0.71 --
+i.e., moderately powered.
+
+\hypertarget{gee-model-assuming-or0.60}{%
+\subsection{GEE Model Assuming
+OR=0.60}\label{gee-model-assuming-or0.60}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# geesim4 <- cps.binary( nsim = 1000,}
+\CommentTok{#                        nsubjects = 50, # 50 participants per cluster assuming equal sizes}
+\CommentTok{#                        nclusters = 6, # 6 clusters per treatment arm}
+\CommentTok{#                        p1=.40, # 40% non-abstinence rate in TAU in Maricich et al. (2020)}
+\CommentTok{#                        p2=.29, # 25% non-abstinence rate in reSET-0 group in Maricich et al. (2020)}
+\CommentTok{#                        sigma_b_sq=0.024, # variance = p(1-p)=0.24; assume 10% variance is between)}
+\CommentTok{#                        sigma_b_sq2=0.021, # variance = p(1-p)=0.21; assume 10% variance is between)}
+\CommentTok{#                        alpha=.05,}
+\CommentTok{#                        method='gee',}
+\CommentTok{#                        quiet=F,}
+\CommentTok{#                        seed=0218211,}
+\CommentTok{#                        lowPowerOverride = TRUE )}
+\KeywordTok{load}\NormalTok{( }\StringTok{'geesim4.RData'}\NormalTok{ )}
+\KeywordTok{summary}\NormalTok{( geesim4 )}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Monte Carlo Power Estimation based on 1000 Simulations: Simple Design, Binary Outcome. Note: 0 additional models were fitted to account for non-convergent simulations.
+## 
+## Power Estimate (alpha = 0.05):
+##  Power Lower.95.CI Upper.95.CI Alpha  Beta Converged Requested
+##  0.763   0.7353915   0.7890505  0.05 0.237      1000      1000
+## 
+## Method: Generalized Estimating Equation 
+## 
+## Variance Parameters:
+##      sigma_b_sq
+## Arm1      0.024
+## Arm2      0.021
+## 
+## Clusters:
+##      n.clust
+## Arm1       6
+## Arm2       6
+## 
+## Observations:
+## $Arm1
+## [1] 50 50 50 50 50 50
+## 
+## $Arm2
+## [1] 50 50 50 50 50 50
+## 
+## 
+## Convergence:
+## TRUE 
+## 1000
+\end{verbatim}
+
+This simulation suggests that our power would be between 0.74-0.79 --
+i.e., approaching the goal of 0.80.
+
+\hypertarget{cox-propotional-hazards-model}{%
+\section{Cox Propotional Hazards
+Model}\label{cox-propotional-hazards-model}}
+
+\end{document}
