@@ -511,23 +511,10 @@ div.tocify {
 <span id="cb2-11"><a href="#cb2-11"></a><span class="co">#                        seed=0218211,</span></span>
 <span id="cb2-12"><a href="#cb2-12"></a><span class="co">#                        lowPowerOverride = TRUE)</span></span>
 <span id="cb2-13"><a href="#cb2-13"></a><span class="kw">load</span>( <span class="st">&#39;geesim1.RData&#39;</span> )</span>
-<span id="cb2-14"><a href="#cb2-14"></a><span class="kw">summary</span>( geesim1 )                       </span></code></pre></div>
-<pre><code>##                 Length Class      Mode     
-## overview           1   -none-     character
-## nsim               1   -none-     numeric  
-## power              7   data.frame list     
-## method             1   -none-     character
-## alpha              1   -none-     numeric  
-## cluster.sizes      2   -none-     list     
-## n.clusters         2   -none-     numeric  
-## variance.parms     2   -none-     numeric  
-## inputs             4   -none-     numeric  
-## ICC                3   -none-     numeric  
-## icc.list           2   data.frame list     
-## model.estimates    5   data.frame list     
-## sim.data           0   -none-     NULL     
-## warning.list       0   -none-     list     
-## convergence     1000   -none-     logical</code></pre>
+<span id="cb2-14"><a href="#cb2-14"></a>geesim1[<span class="st">&quot;power&quot;</span>]                     </span></code></pre></div>
+<pre><code>## $power
+##       Power Lower.95.CI Upper.95.CI Alpha  Beta Converged Requested
+## Arm.2 0.956   0.9413796   0.9678505  0.05 0.044      1000      1000</code></pre>
 <p>This simulation suggests that our power would be between 0.94-0.97 – i.e., well powered.</p>
 </div>
 <div id="gee-model-assuming-or0.55" class="section level3">
@@ -551,23 +538,10 @@ div.tocify {
 <span id="cb4-11"><a href="#cb4-11"></a><span class="co">#                        seed=0218211,</span></span>
 <span id="cb4-12"><a href="#cb4-12"></a><span class="co">#                        lowPowerOverride = TRUE )</span></span>
 <span id="cb4-13"><a href="#cb4-13"></a><span class="kw">load</span>( <span class="st">&#39;geesim5.RData&#39;</span> )</span>
-<span id="cb4-14"><a href="#cb4-14"></a><span class="kw">summary</span>( geesim5 )</span></code></pre></div>
-<pre><code>##                 Length Class      Mode     
-## overview           1   -none-     character
-## nsim               1   -none-     numeric  
-## power              7   data.frame list     
-## method             1   -none-     character
-## alpha              1   -none-     numeric  
-## cluster.sizes      2   -none-     list     
-## n.clusters         2   -none-     numeric  
-## variance.parms     2   -none-     numeric  
-## inputs             4   -none-     numeric  
-## ICC                3   -none-     numeric  
-## icc.list           2   data.frame list     
-## model.estimates    5   data.frame list     
-## sim.data           0   -none-     NULL     
-## warning.list       0   -none-     list     
-## convergence     1000   -none-     logical</code></pre>
+<span id="cb4-14"><a href="#cb4-14"></a>geesim5[<span class="st">&quot;power&quot;</span>]</span></code></pre></div>
+<pre><code>## $power
+##       Power Lower.95.CI Upper.95.CI Alpha  Beta Converged Requested
+## Arm.2 0.875    0.852893   0.8948702  0.05 0.125      1000      1000</code></pre>
 <p>This simulation suggests that our power would be well-powered 0.85-0.89 to detect an OR=0.55.</p>
 </div>
 <div id="gee-model-assuming-or0.60" class="section level3">
@@ -591,23 +565,10 @@ div.tocify {
 <span id="cb6-11"><a href="#cb6-11"></a><span class="co">#                        seed=0218211,</span></span>
 <span id="cb6-12"><a href="#cb6-12"></a><span class="co">#                        lowPowerOverride = TRUE )</span></span>
 <span id="cb6-13"><a href="#cb6-13"></a><span class="kw">load</span>( <span class="st">&#39;geesim4.RData&#39;</span> )</span>
-<span id="cb6-14"><a href="#cb6-14"></a><span class="kw">summary</span>( geesim4 )</span></code></pre></div>
-<pre><code>##                 Length Class      Mode     
-## overview           1   -none-     character
-## nsim               1   -none-     numeric  
-## power              7   data.frame list     
-## method             1   -none-     character
-## alpha              1   -none-     numeric  
-## cluster.sizes      2   -none-     list     
-## n.clusters         2   -none-     numeric  
-## variance.parms     2   -none-     numeric  
-## inputs             4   -none-     numeric  
-## ICC                3   -none-     numeric  
-## icc.list           2   data.frame list     
-## model.estimates    5   data.frame list     
-## sim.data           0   -none-     NULL     
-## warning.list       0   -none-     list     
-## convergence     1000   -none-     logical</code></pre>
+<span id="cb6-14"><a href="#cb6-14"></a>geesim4[<span class="st">&quot;power&quot;</span>]</span></code></pre></div>
+<pre><code>## $power
+##       Power Lower.95.CI Upper.95.CI Alpha  Beta Converged Requested
+## Arm.2 0.763   0.7353915   0.7890505  0.05 0.237      1000      1000</code></pre>
 <p>This simulation suggests that our power would be between 0.74-0.79 – i.e., approaching the goal of 0.80.</p>
 </div>
 <div id="gee-model-assuming-or0.65" class="section level3">
@@ -631,23 +592,10 @@ div.tocify {
 <span id="cb8-11"><a href="#cb8-11"></a><span class="co">#                        seed=0218211,</span></span>
 <span id="cb8-12"><a href="#cb8-12"></a><span class="co">#                        lowPowerOverride = TRUE )</span></span>
 <span id="cb8-13"><a href="#cb8-13"></a><span class="kw">load</span>( <span class="st">&#39;geesim3.RData&#39;</span> )</span>
-<span id="cb8-14"><a href="#cb8-14"></a><span class="kw">summary</span>( geesim3 )            </span></code></pre></div>
-<pre><code>##                 Length Class      Mode     
-## overview           1   -none-     character
-## nsim               1   -none-     numeric  
-## power              7   data.frame list     
-## method             1   -none-     character
-## alpha              1   -none-     numeric  
-## cluster.sizes      2   -none-     list     
-## n.clusters         2   -none-     numeric  
-## variance.parms     2   -none-     numeric  
-## inputs             4   -none-     numeric  
-## ICC                3   -none-     numeric  
-## icc.list           2   data.frame list     
-## model.estimates    5   data.frame list     
-## sim.data           0   -none-     NULL     
-## warning.list       0   -none-     list     
-## convergence     1000   -none-     logical</code></pre>
+<span id="cb8-14"><a href="#cb8-14"></a>geesim3[<span class="st">&quot;power&quot;</span>]         </span></code></pre></div>
+<pre><code>## $power
+##       Power Lower.95.CI Upper.95.CI Alpha  Beta Converged Requested
+## Arm.2 0.688   0.6582616   0.7166268  0.05 0.312      1000      1000</code></pre>
 <p>This simulation suggests that our power would be between 0.66-0.71 – i.e., moderately powered.</p>
 </div>
 <div id="gee-model-assuming-or0.80" class="section level3">
@@ -671,23 +619,10 @@ div.tocify {
 <span id="cb10-11"><a href="#cb10-11"></a><span class="co">#                        seed=0218211,</span></span>
 <span id="cb10-12"><a href="#cb10-12"></a><span class="co">#                        lowPowerOverride = TRUE )</span></span>
 <span id="cb10-13"><a href="#cb10-13"></a><span class="kw">load</span>( <span class="st">&#39;geesim2.RData&#39;</span> )</span>
-<span id="cb10-14"><a href="#cb10-14"></a><span class="kw">summary</span>( geesim2 )                       </span></code></pre></div>
-<pre><code>##                 Length Class      Mode     
-## overview           1   -none-     character
-## nsim               1   -none-     numeric  
-## power              7   data.frame list     
-## method             1   -none-     character
-## alpha              1   -none-     numeric  
-## cluster.sizes      2   -none-     list     
-## n.clusters         2   -none-     numeric  
-## variance.parms     2   -none-     numeric  
-## inputs             4   -none-     numeric  
-## ICC                3   -none-     numeric  
-## icc.list           2   data.frame list     
-## model.estimates    5   data.frame list     
-## sim.data           0   -none-     NULL     
-## warning.list       0   -none-     list     
-## convergence     1000   -none-     logical</code></pre>
+<span id="cb10-14"><a href="#cb10-14"></a>geesim2[<span class="st">&quot;power&quot;</span>]                    </span></code></pre></div>
+<pre><code>## $power
+##       Power Lower.95.CI Upper.95.CI Alpha  Beta Converged Requested
+## Arm.2 0.263   0.2359435   0.2914594  0.05 0.737      1000      1000</code></pre>
 <p>This simulation suggests that our power would be between 0.23-0.29 – i.e., poorly powered.</p>
 </div>
 </div>
@@ -714,23 +649,10 @@ div.tocify {
 <span id="cb12-11"><a href="#cb12-11"></a><span class="co">#                        seed=0221211,</span></span>
 <span id="cb12-12"><a href="#cb12-12"></a><span class="co">#                        lowPowerOverride = TRUE )</span></span>
 <span id="cb12-13"><a href="#cb12-13"></a><span class="kw">load</span>( <span class="st">&#39;geesim6.RData&#39;</span> )</span>
-<span id="cb12-14"><a href="#cb12-14"></a><span class="kw">summary</span>( geesim6 )</span></code></pre></div>
-<pre><code>##                 Length Class      Mode     
-## overview           1   -none-     character
-## nsim               1   -none-     numeric  
-## power              7   data.frame list     
-## method             1   -none-     character
-## alpha              1   -none-     numeric  
-## cluster.sizes      2   -none-     list     
-## n.clusters         2   -none-     numeric  
-## variance.parms     2   -none-     numeric  
-## inputs             4   -none-     numeric  
-## ICC                3   -none-     numeric  
-## icc.list           2   data.frame list     
-## model.estimates    5   data.frame list     
-## sim.data           0   -none-     NULL     
-## warning.list       0   -none-     list     
-## convergence     1000   -none-     logical</code></pre>
+<span id="cb12-14"><a href="#cb12-14"></a>geesim6[<span class="st">&quot;power&quot;</span>]</span></code></pre></div>
+<pre><code>## $power
+##       Power Lower.95.CI Upper.95.CI Alpha  Beta Converged Requested
+## Arm.2 0.806   0.7801051   0.8300789  0.05 0.194      1000      1000</code></pre>
 <p>This simulation suggests that our power would be between 0.74-0.79 – i.e., approaching the goal of 0.80.</p>
 </div>
 </div>

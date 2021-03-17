@@ -1,12 +1,15 @@
 ---
 title: "Power Analysis"
 output:
+  word_document:
+    toc: yes
+    toc_depth: '3'
   html_document:
     code_folding: hide
     toc: yes
     toc_depth: 3
     number_sections: yes
-    toc_float: true
+    toc_float: yes
 ---
 
 # Notes
@@ -51,7 +54,7 @@ Estimate power for rejecting the null hypothesis that difference in the odds of 
 #                        seed=0218211,
 #                        lowPowerOverride = TRUE)
 load( 'geesim1.RData' )
-summary( geesim1 )                       
+geesim1["power"]                     
 ```
 
 This simulation suggests that our power would be between 0.94-0.97 -- i.e., well powered.  
@@ -78,7 +81,7 @@ Next, we will calculate power using a simulation assuming an in-between effect w
 #                        seed=0218211,
 #                        lowPowerOverride = TRUE )
 load( 'geesim5.RData' )
-summary( geesim5 )
+geesim5["power"]
 ```
 
 This simulation suggests that our power would be well-powered 0.85-0.89 to detect an OR=0.55. 
@@ -105,7 +108,7 @@ Next, we will calculate power using a simulation assuming an in-between effect w
 #                        seed=0218211,
 #                        lowPowerOverride = TRUE )
 load( 'geesim4.RData' )
-summary( geesim4 )
+geesim4["power"]
 ```
 
 This simulation suggests that our power would be between 0.74-0.79 -- i.e., approaching the goal of 0.80. 
@@ -132,7 +135,7 @@ Now we will calculate power using a simulation assuming an in-between effect whe
 #                        seed=0218211,
 #                        lowPowerOverride = TRUE )
 load( 'geesim3.RData' )
-summary( geesim3 )            
+geesim3["power"]         
 ```
 
 This simulation suggests that our power would be between 0.66-0.71 -- i.e., moderately powered.
@@ -158,7 +161,7 @@ Now we will calculate power using a simulation assuming a more modest effect whe
 #                        seed=0218211,
 #                        lowPowerOverride = TRUE )
 load( 'geesim2.RData' )
-summary( geesim2 )                       
+geesim2["power"]                    
 ```
 
 This simulation suggests that our power would be between 0.23-0.29 -- i.e., poorly powered.  
@@ -188,15 +191,22 @@ Rerun geesim4, which assumes a ~40% reduction in the odds but with only 5% of th
 #                        seed=0221211,
 #                        lowPowerOverride = TRUE )
 load( 'geesim6.RData' )
-summary( geesim6 )
+geesim6["power"]
 ```
 
 This simulation suggests that our power would be between 0.74-0.79 -- i.e., approaching the goal of 0.80. 
 
 
 
+```{r}
 
-# Cox Propotional Hazards Model
+```
+
+
+
+# Cox Propotional Hazards Models
+
+## Non-Abstinence Time-To-Onset
 These models should be taken with a **big** grain of salt. Power analysis for a proportional hazards model with individuals clustered within groups is a bit beyond my capabilities. I believe this would require simulations that are beyond my expertise. I ran a number of quick-and-dirty models varying the probability of an event (drug use) over the full follow-up period in the reSET-O group and the assumed hazard ratio. For all models, I assumed that 40% of TAU participants would have an event over the full follow-up. As with the previous examples, I am assuming 300 participants per treatment arm ($N=600$).
 
 The consequence of failing to account for clustering is having too small standard error estimates. I used a conservative $\alpha = .025$ to try to counteract this -- a terribly unsophisticated approach. The [powerSurvEpi package](https://cran.r-project.org/web/packages/powerSurvEpi/powerSurvEpi.pdf) was used to obtain these estimates.
@@ -244,6 +254,63 @@ plot( sort( seq(.80,.60,-.05), decreasing = T ),
       main='Proportional Hazards Model',
       sub='40% Probability of Event in Control over Full Time Period (2-tailed alpha=.025)',
       font.lab=2)
+abline( h = .8, col = 'darkblue', lty = 3 )
+abline( v= .65, col = 'darkblue', lty = 3 )
 ```
 
 As can be seen in the plot above, these very unsophisticated power estimates suggest that we could detect a hazard ratio of approximately $.65-.60$ to achieve $1-\beta=.80$. 
+
+## Time to Dropout
+
+```{r warning=F, message=F}
+drop.50 <- powerCT.default(nE = 300,
+                           nC = 300,
+                           pE = 0.18,
+                           pC = 0.32,
+                           RR = 0.5,
+                           alpha = 0.025 )
+drop.55 <- powerCT.default(nE = 300,
+                           nC = 300,
+                           pE = 0.18,
+                           pC = 0.32,
+                           RR = 0.55,
+                           alpha = 0.025 )
+drop.60 <- powerCT.default(nE = 300,
+                           nC = 300,
+                           pE = 0.19,
+                           pC = 0.32,
+                           RR = 0.6,
+                           alpha = 0.025 )
+drop.65 <- powerCT.default(nE = 300,
+                           nC = 300,
+                           pE = 0.21,
+                           pC = 0.32,
+                           RR = 0.65,
+                           alpha = 0.025 )
+drop.70 <- powerCT.default(nE = 300,
+                           nC = 300,
+                           pE = 0.225,
+                           pC = 0.32,
+                           RR = 0.70,
+                           alpha = 0.025 )
+
+Power <- c(surv.60,surv.65,surv.70,surv.75,surv.80,drop.50,drop.55,drop.60,drop.65,drop.70)
+HazardRatio <- c( seq(.6, .8, .05), seq(.5, .7, .05) )
+Model <- rep( c('Time To Non-Abstinence','Time To Dropout'), each = 5 )
+tto <- data.frame( Model, HazardRatio, Power ) 
+
+require(ggplot2)
+
+ttoplot <- ggplot( tto, aes( HazardRatio, Power ) ) +
+  geom_point(size=3) +
+  facet_wrap( ~Model ) +
+  geom_hline( yintercept = .80, color='red', linetype = 'dashed' ) +
+  ggtitle( label='Power: Proportional Hazards Models', subtitle = '2-tailed alpha = .025' ) +
+  theme( axis.title = element_text( face='bold', size = 14 ),
+         plot.title = element_text( face='bold', size = 16, color = 'darkblue' ),
+         strip.text = element_text( size = 14, face = 'bold'),
+         axis.text = element_text( size=12 ),
+         plot.subtitle = element_text(size=12, face='bold'))
+ttoplot
+
+```
